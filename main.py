@@ -1,8 +1,9 @@
+from json.decoder import JSONDecodeError
 import requests
 
 
-def get_text_from_url(url_text):
-    response = requests.get(url_text)
+def get_text_from_url(url_text, payload):
+    response = requests.get(url_text, params=payload)
 
     if response.status_code == 200:
         content = response.text
@@ -12,9 +13,27 @@ def get_text_from_url(url_text):
         return None
 
 
-url = "https://playground.learnqa.ru/api/get_text"
-response_content = get_text_from_url(url)
+def get_parsed_json():
+    response = requests.get("https://playground.learnqa.ru/api/get_text")
+    try:
+        parsed_response_text = response.json()
+        return parsed_response_text
+    except JSONDecodeError:
+        print("Response is not a JSON format")
+
+
+def get_status_code():
+    response = requests.post("https://playground.learnqa.ru/api/get_301", allow_redirects=True)
+    print(response.status_code)
+    print(response.history)
+
+
+payload = {"name": "User"}
+url = "https://playground.learnqa.ru/api/get_301"
+response_content = get_text_from_url(url, payload)
 
 if response_content is not None:
     print("Response content:")
     print(response_content)
+# print(get_parsed_json())
+get_status_code()
