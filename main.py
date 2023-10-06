@@ -21,6 +21,12 @@ def get_parsed_json():
     except JSONDecodeError:
         print("Response is not a JSON format")
 
+def api_test():
+    payload = {"email": "email", "password": "password"}
+    response = requests.post("https://sc.x5.ru/v2/logistics/auth", payload)
+    print(response.status_code)
+    print(response.text)
+
 
 def get_status_code():
     response = requests.post("https://playground.learnqa.ru/api/get_301", allow_redirects=True)
@@ -36,4 +42,5 @@ if response_content is not None:
     print("Response content:")
     print(response_content)
 # print(get_parsed_json())
-get_status_code()
+# get_status_code()
+api_test()
